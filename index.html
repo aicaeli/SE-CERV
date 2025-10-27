@@ -21,7 +21,13 @@
             margin: 0;
             font-size: 2rem;
         }
-        nav {
+        h2 {
+            color: #004aad;
+             border-bottom: 3px solid #004aad;
+             display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            }nav {
             background-color: #00367a;
             text-align: center;
             padding: 10px 0;
@@ -60,6 +66,13 @@
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        .feature {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
         .report-section {
             background-color: #e9f1ff;
             padding: 30px;
@@ -91,7 +104,25 @@
             text-align: center;
             padding: 15px 0;
             font-size: 0.9rem;
+        }.report-form input, .report-form textarea {
+             background-color: #fff;
+            border: 1px solid #bbb;
+            transition: border-color 0.3s ease;
         }
+        .report-form input:focus, .report-form textarea:focus {
+            border-color: #004aad;
+             outline: none;
+        }
+        .report-form button {
+            background-color: #0066ff;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .report-form button:hover {
+            background-color: #004aad;
+            transform: scale(1.03);
+        }
+
     </style>
 </head>
 <body>
@@ -166,8 +197,17 @@
     </section>
 
     <footer>
-        &copy; 2025 CERV Project | Built for Safer Communities
+        &copy; 2025 CERV Project | Empowering Communities, One Report at a Time
     </footer>
+
+    <script>
+document.querySelector(".report-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    alert("✅ Thank you for submitting your report! Our team will review it soon.");
+    this.reset();
+});
+</script>
+
 
 </body>
 </html>
