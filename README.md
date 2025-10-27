@@ -71,55 +71,14 @@ To provide a reliable and accessible platform that helps citizens report issues,
 
 ## Project Status
 
-🚧 **Under Development**  
-CERV is currently in its development phase. Core modules such as report submission, user authentication, and admin dashboards are being implemented. Future updates will include enhanced real-time notifications, analytics dashboards, and mobile integration.
+**Under Development**  
+CERV is currently in its development phase. Core modules such as report submission, user authentication, and admin dashboards are being implemented. Future updates will include enhanced real-time notifications, analytics dashboards, and mobile integration.  
 
 ---
 
-## Future Enhancements / Roadmap
+## Development Team
 
-- [ ] Integration with local government APIs for automatic case forwarding  
-- [ ] Offline mode for report submission without internet connection  
-- [ ] AI-based report categorization (e.g., detecting emergency type from photo or text)  
-- [ ] Multi-language support (Cebuano, Filipino, English)  
-- [ ] Advanced analytics dashboard for admins  
-- [ ] Mobile app release for Android and iOS  
-
----
-
-## Contributing
-
-Contributions are welcome!  
-If you’re interested in helping improve CERV, you can:
-
-1. Fork this repository  
-2. Create a new feature branch (`git checkout -b feature/your-feature-name`)  
-3. Commit your changes (`git commit -m 'Add new feature'`)  
-4. Push to your branch (`git push origin feature/your-feature-name`)  
-5. Submit a Pull Request for review  
-
----
-
-## License
-
-This project is currently for **academic and research purposes only**.  
-A proper open-source license (e.g., MIT or Apache 2.0) will be applied once the project reaches its public release stage.
-
----
-
-## Acknowledgements
-
-We’d like to acknowledge the following:
-
-- Our project advisers and mentors for guidance and feedback  
-- The community testers and volunteers who provided input  
-- Open-source libraries and APIs that make this project possible  
-
----
-
-## Preview (Coming Soon)
-
-Screenshots and demo videos will be added once the prototype is complete.
-
----
-
+**Members:**
+*Angelica D. Temones
+*Jeramie Anne Q. Losorata
+*Reiznick McCain G. Tenchavez
