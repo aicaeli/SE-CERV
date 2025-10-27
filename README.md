@@ -1,30 +1,125 @@
-🛰️ CERV - Community Emergency Reporting and Verification
+# CERV (Community Emergency Reporting and Verification)
 
-CERV is an app made to help people take part in improving their communities by reporting emergencies, issues, or hazards in real time. With CERV, users can easily send reports that include photos, files, and GPS locations, making it faster for authorities to respond and take action. The platform aims to create a more transparent and connected environment where citizens and institutions can work together to solve problems. It includes features like real-time location tracking, photo uploads, instant notifications, and a simple, user-friendly interface. Overall, CERV helps promote safety, teamwork, and quick response during community emergencies.
+CERV is an app that utilizes a community-based alert system, empowering citizens to actively improve their communities by reporting issues, hazards, and emergencies in real time. Users can submit reports with photos, files, and GPS locations, which are then forwarded to the appropriate authorities for resolution. The system promotes transparency, enhances emergency response times, and strengthens collaboration between citizens and institutions, ultimately fostering safer and more resilient communities.
 
-🌍 Overview
-CERV allows users or empowers citizens to:
-- Submit reports with photos, files, and GPS locations
-- Notify authorities for faster response times
-- Promote **transparency and collaboration** between citizens and institutions
--This also strengthen community awareness and safety
+---
 
-🚀 Features
-- 📍 Real-time location-based reporting-Report incidents directly from where they happen.   
-- 📷 Upload photos and evidence-Attach proof to make reports more reliable.  
-- ⚡ Instant notifications to authorities-Keep authorities updated in real time.  
-- 🤝 Citizen collaboration for safer communities-Work together to build safer and more responsive communities.
-- 💬 User-Friendly Interface-Simple, accessible design for everyone to use easily. 
+## Objectives
 
-💻 How to Run
-1. Download or clone the repository  
-2. Open `index.html` in your browser  
-3. View the homepage and explore the features  
+**Main Goal:**  
+To provide a reliable and accessible platform that helps citizens report issues, emergencies, and hazards in real time.
 
-👩‍💻 Contributors
-- Losorata, Jeramie Anne BSCS-3  
-- Temones, Angelica BSCS-3
-- Tenchavez, Rieznick McCain BSIT-3
+**Specific Objectives:**
+* Provide an alert system for the community, specifically in Cebu City.  
+* Allow users to submit detailed reports with location and media, and notify users and authorities about real-time updates.  
+* Facilitate faster responses from emergency departments while improving transparency and accountability in local issue resolution.
 
-🏁 Project Goal
-CERV's goal is to make communities safer, more transparent, and more connected by using technology to report, verify, and respond to emergencies faster. The project promotes cooperation between citizens and public institutions to create a more responsive and proactive environment for everyone.
+---
+
+## Features
+
+* **User Registration & Verification:** Create accounts, upload ID, selfie verification, and identity confirmation.  
+* **Report Submission:** Submit reports with categories, descriptions, urgency, media (photos/videos), and GPS location.  
+* **Report Tracking & Notifications:** Real-time updates on report status (pending, in-progress, dispatched, resolved).  
+* **Admin Dashboard:** Authorities can review, categorize, assign actions, and generate monthly summaries.  
+* **Hotspot & Map Visualization:** Display issues on a map with clustering of frequent concerns using Google Maps API.  
+* **Emergency Response Alerts:** Forward urgent cases to nearby responders automatically.  
+* **Media Repository:** Secure storage for photos, videos, and files.  
+* **Basic Statistics & Reports:** Track monthly report counts and resolution status.
+
+---
+
+## System Design (High-Level)
+
+**Modules / Architecture:**
+
+* **User Module:** Registration, login, verification, profile management  
+* **Report Module:** Report creation, media uploads, urgency tagging  
+* **Notification Module:** Real-time alerts to users & responders  
+* **Admin Module:** Dashboard for report review, status updates, and analytics  
+* **Map & Hotspot Module:** Google Maps API integration with clustering  
+* **Media Storage Module:** Secure cloud-based repository  
+* **Statistics Module:** Weekly/monthly summaries, completed vs unresolved reports  
+
+**Technologies / Tools:**
+
+* Frontend: React.js / Flutter (mobile), HTML/CSS/JS (web)  
+* Backend: Node.js / Express.js (or Java/Spring Boot)  
+* Database: Firebase Firestore / MySQL / PostgreSQL  
+* Map API: Google Maps API  
+* Cloud Storage: Firebase Storage / AWS S3  
+* Authentication: Firebase Auth / OAuth2  
+* Notifications: Firebase Cloud Messaging / Twilio API
+
+---
+
+## Risks & Mitigation
+
+**Possible Risks:**
+* Fake or spam reports submitted by users  
+* Server downtime during emergencies  
+* Data privacy breaches (sensitive info exposed)  
+* Low adoption rate by community and authorities  
+
+**Mitigation Measures:**
+* User verification with ID + selfie  
+* Cloud hosting with load balancing and backup servers  
+* Encryption of sensitive data and role-based access control  
+* Community awareness campaigns and LGU staff training  
+
+---
+
+## Project Status
+
+🚧 **Under Development**  
+CERV is currently in its development phase. Core modules such as report submission, user authentication, and admin dashboards are being implemented. Future updates will include enhanced real-time notifications, analytics dashboards, and mobile integration.
+
+---
+
+## Future Enhancements / Roadmap
+
+- [ ] Integration with local government APIs for automatic case forwarding  
+- [ ] Offline mode for report submission without internet connection  
+- [ ] AI-based report categorization (e.g., detecting emergency type from photo or text)  
+- [ ] Multi-language support (Cebuano, Filipino, English)  
+- [ ] Advanced analytics dashboard for admins  
+- [ ] Mobile app release for Android and iOS  
+
+---
+
+## Contributing
+
+Contributions are welcome!  
+If you’re interested in helping improve CERV, you can:
+
+1. Fork this repository  
+2. Create a new feature branch (`git checkout -b feature/your-feature-name`)  
+3. Commit your changes (`git commit -m 'Add new feature'`)  
+4. Push to your branch (`git push origin feature/your-feature-name`)  
+5. Submit a Pull Request for review  
+
+---
+
+## License
+
+This project is currently for **academic and research purposes only**.  
+A proper open-source license (e.g., MIT or Apache 2.0) will be applied once the project reaches its public release stage.
+
+---
+
+## Acknowledgements
+
+We’d like to acknowledge the following:
+
+- Our project advisers and mentors for guidance and feedback  
+- The community testers and volunteers who provided input  
+- Open-source libraries and APIs that make this project possible  
+
+---
+
+## Preview (Coming Soon)
+
+Screenshots and demo videos will be added once the prototype is complete.
+
+---
+
