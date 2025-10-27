@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CERV - Crowdsourced Emergency Reporting Platform</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+        header {
+            background-color: #004aad;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        nav {
+            background-color: #00367a;
+            text-align: center;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .about {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .feature {
+            flex: 1 1 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .report-section {
+            background-color: #e9f1ff;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .report-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .report-form input, .report-form textarea, .report-form button {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .report-form button {
+            background-color: #004aad;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .report-form button:hover {
+            background-color: #00367a;
+        }
+        footer {
+            background-color: #00367a;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CERV - Community Emergency Reporting & Verification</h1>
+        <p>Empowering citizens to build safer and more resilient communities</p>
+    </header>
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#report">Report</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="about" class="about">
+        <h2>About CERV</h2>
+        <p>
+            The <strong>Community Emergency Reporting and Verification (CERV)</strong> platform is a 
+            crowdsourced reporting system that allows citizens to actively participate in improving 
+            their communities. Through CERV, users can report issues, hazards, or emergencies in real time — 
+            attaching photos, files, and GPS locations. Reports are automatically forwarded to 
+            appropriate authorities for quick response and resolution.
+        </p>
+        <p>
+            CERV promotes transparency, faster emergency responses, and stronger collaboration 
+            between citizens and institutions, fostering safer and more resilient communities.
+        </p>
+    </section>
+
+    <section id="features">
+        <h2>Key Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>📍 GPS-Enabled Reports</h3>
+                <p>Attach precise locations to help authorities identify where assistance is needed.</p>
+            </div>
+            <div class="feature">
+                <h3>📷 Photo & File Upload</h3>
+                <p>Provide supporting evidence such as images or documents for accurate assessments.</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ Real-Time Notifications</h3>
+                <p>Receive updates about report progress and resolution from local agencies.</p>
+            </div>
+            <div class="feature">
+                <h3>🤝 Citizen Collaboration</h3>
+                <p>Encourage transparency and community involvement in civic improvement.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="report" class="report-section">
+        <h2>Submit a Report</h2>
+        <form class="report-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Describe the issue..." rows="4" required></textarea>
+            <input type="file" accept="image/*,application/pdf">
+            <input type="text" placeholder="Location or GPS coordinates" required>
+            <button type="submit">Submit Report</button>
+        </form>
+    </section>
+
+    <section id="contact">
+        <h2>Contact & Support</h2>
+        <p>
+            For inquiries or feedback, please email us at: 
+            <a href="mailto:support@cerv-platform.org">support@cerv-platform.org</a>
+        </p>
+    </section>
+
+    <footer>
+        &copy; 2025 CERV Project | Built for Safer Communities
+    </footer>
+
+</body>
+</html>
