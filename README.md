@@ -79,6 +79,6 @@ CERV is currently in its development phase. Core modules such as report submissi
 ## Development Team
 
 **Members:**
-*Angelica D. Temones
-*Jeramie Anne Q. Losorata
-*Reiznick McCain G. Tenchavez
+* Angelica D. Temones
+* Jeramie Anne Q. Losorata
+* Reiznick McCain G. Tenchavez
