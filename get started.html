@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CERV | Welcome</title>
+
+  <!-- Google Fonts + Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="intro2.css" />
+</head>
+
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+
+      <!-- ✅ ORIGINAL WELCOME PAGE (unchanged) -->
+       <div class="welcome-container">
+      <div class="logo">
+        <img src="cerv logo.png" alt="CERV Logo" class="app-logo">
+      </div>
+
+      <div class="slides">
+        <div class="slide active">
+          <img src="verify.png" alt="Verified Reporting" class="feature-img">
+          <h2>Verified Reporting</h2>
+          <p>Submit real and verified reports instantly to the right authorities.</p>
+        </div>
+
+        <div class="slide">
+          <img src="location.png" alt="GPS Tagging" class="feature-img">
+          <h2>Real-time GPS Tagging</h2>
+          <p>Attach accurate GPS locations to your reports for faster response.</p>
+        </div>
+
+        <div class="slide">
+          <img src="community.png" alt="Community Powered" class="feature-img">
+          <h2>Community Powered</h2>
+          <p>Collaborate with others to build a safer, smarter community.</p>
+        </div>
+      </div>
+    </div>
+
+
+        <div class="slide-indicators">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="buttons">
+          <a href="login.html" class="btn">Get Started</a>
+          <a href="signup.html" class="btn-outline">Register</a>
+        </div>
+
+        <footer>
+          <a href="#">Terms of Service</a> | 
+          <a href="#">Privacy Policy</a><br>
+          <p>© 2025 CERV, All Rights Reserved.</p>
+        </footer>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ✅ INTRO SCREEN SCRIPT
+    const introSlides = document.querySelectorAll('.intro-slide');
+    const nextBtn = document.querySelector('.next-btn');
+    const introScreen = document.querySelector('.intro-screen');
+    const welcomeContainer = document.querySelector('.welcome-container');
+    let currentSlide = 0;
+
+    nextBtn.addEventListener('click', () => {
+      introSlides[currentSlide].classList.remove('active');
+      currentSlide++;
+      if (currentSlide < introSlides.length) {
+        introSlides[currentSlide].classList.add('active');
+      } else {
+        introScreen.style.display = 'none';
+        welcomeContainer.style.display = 'block';
+      }
+    });
+  </script>
+
+  <script src="intro2.js"></script>
+</body>
+</html>

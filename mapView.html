@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Map View - CERV</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    /* === PHONE FRAME === */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .phone-frame {
+      width: 400px;
+      min-height: 700px;
+      background: #fff;
+      border-radius: 30px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === HEADER === */
+    .map-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: #007bff;
+      color: white;
+    }
+
+    .map-header .back-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    .map-header h1 {
+      font-size: 1.3em;
+      margin: 0;
+    }
+
+    /* === FILTERS SECTION === */
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 15px 10px;
+    }
+
+    .filters select {
+      flex: 1;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .filters select:hover, .filters select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    /* === MAP CONTAINER === */
+    #map {
+      flex: 1;
+      margin: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 400px;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    /* === LEGENDS SECTION === */
+    .legends {
+      background: #f9fafb;
+      margin: 10px 16px 20px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 0.9em;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+    }
+
+    .legend-high { background: #f8d7da; }
+    .legend-medium { background: #fff3cd; }
+    .legend-low { background: #d1ecf1; }
+    .legend-resolved { background: #d4edda; }
+
+    /* === ANIMATIONS === */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <!-- HEADER -->
+    <div class="map-header">
+      <button class="back-btn" onclick="window.history.back()">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+      <h1>Map View</h1>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option value="Safety">Safety</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Community">Community</option>
+      </select>
+
+      <select id="urgencyFilter">
+        <option value="">All Urgency</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+
+    <!-- MAP -->
+    <div id="map"></div>
+
+    <!-- LEGENDS -->
+    <div class="legends">
+      <div class="legend-item"><div class="legend-color legend-high"></div> High Urgency</div>
+      <div class="legend-item"><div class="legend-color legend-medium"></div> Medium Urgency</div>
+      <div class="legend-item"><div class="legend-color legend-low"></div> Low Urgency</div>
+      <div class="legend-item"><div class="legend-color legend-resolved"></div> Resolved</div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // === INITIALIZE MAP ===
+    const map = L.map('map').setView([10.3157, 123.8854], 13); // Centered in CEBU
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // === SAMPLE REPORT DATA ===
+    const reports = [
+      { id: 1, title: "Broken Streetlight near Colon", category: "Maintenance", urgency: "Medium", coords: [10.2965, 123.8983] },
+      { id: 2, title: "Flooded Road in Mabolo", category: "Safety", urgency: "High", coords: [10.3245, 123.9167] },
+      { id: 3, title: "Community Cleanup in Lahug", category: "Community", urgency: "Low", coords: [10.3220, 123.9025] },
+      { id: 4, title: "Fire Hazard near Carbon Market", category: "Safety", urgency: "High", coords: [10.2922, 123.9015] },
+      { id: 5, title: "Trash Overflow at Fuente Circle", category: "Maintenance", urgency: "Medium", coords: [10.3100, 123.8930] },
+      { id: 6, title: "Damaged Road at IT Park", category: "Infrastructure", urgency: "High", coords: [10.3291, 123.9050] },
+      { id: 7, title: "Noisy Construction in Banilad", category: "Community", urgency: "Low", coords: [10.3395, 123.9137] },
+      { id: 8, title: "Leaking Water Pipe near Capitol Site", category: "Maintenance", urgency: "Medium", coords: [10.3118, 123.8945] },
+      { id: 9, title: "Blocked Drain in Guadalupe", category: "Safety", urgency: "High", coords: [10.3139, 123.8850] },
+      { id: 10, title: "Community Garden Project in Talamban", category: "Community", urgency: "Low", coords: [10.3571, 123.9173] },
+    ];
+
+    // === COLOR BASED ON URGENCY ===
+    function getMarkerColor(urgency) {
+      switch (urgency) {
+        case "High": return "red";
+        case "Medium": return "orange";
+        case "Low": return "blue";
+        default: return "gray";
+      }
+    }
+
+    // === MARKERS ===
+    let markers = [];
+    function loadMarkers(filteredReports) {
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      filteredReports.forEach(r => {
+        const marker = L.circleMarker(r.coords, {
+          radius: 10,
+          fillColor: getMarkerColor(r.urgency),
+          color: "#fff",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.9
+        })
+        .bindPopup(`<b>${r.title}</b><br>Category: ${r.category}<br>Urgency: ${r.urgency}`)
+        .addTo(map);
+        markers.push(marker);
+      });
+    }
+
+    loadMarkers(reports);
+
+    // === FILTER FUNCTIONALITY ===
+    const categoryFilter = document.getElementById("categoryFilter");
+    const urgencyFilter = document.getElementById("urgencyFilter");
+
+    function updateMapView() {
+      const category = categoryFilter.value;
+      const urgency = urgencyFilter.value;
+
+      const filtered = reports.filter(r => {
+        return (category === "" || r.category === category) &&
+               (urgency === "" || r.urgency === urgency);
+      });
+
+      loadMarkers(filtered);
+    }
+
+    categoryFilter.addEventListener("change", updateMapView);
+    urgencyFilter.addEventListener("change", updateMapView);
+  </script>
+</body>
+</html>

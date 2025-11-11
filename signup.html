@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CERV | Sign Up</title>
+
+  <!-- Google Fonts + Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+
+      <div class="signup-container">
+        <div class="logo">
+          <img src="cerv logo.png" alt="CERV Logo" class="app-logo">
+        </div>
+
+          <h2>Create Account</h2>
+          <p class="subtitle">Join CERV and help build safer communities</p>
+
+          <!-- Progress steps -->
+          <div class="progress-steps">
+            <div class="step-indicator active" data-step="1"><span>1</span><label>Personal</label></div>
+            <div class="step-indicator" data-step="2"><span>2</span><label>Address</label></div>
+            <div class="step-indicator" data-step="3"><span>3</span><label>Verification</label></div>
+            <div class="step-indicator" data-step="4"><span>4</span><label>Security</label></div>
+          </div>
+
+          <form id="signupForm" novalidate>
+            <!-- STEP 1: Personal Info -->
+            <section class="form-step active" data-step="1">
+              <div class="input-group">
+                <span class="material-icons-outlined">person</span>
+                <input type="text" id="fullname" placeholder="Full Name (First Middle Last)" required>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">email</span>
+                <input type="email" id="email" placeholder="Email Address" required>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">phone_iphone</span>
+                <input type="tel" id="mobile" placeholder="Mobile Number" inputmode="tel" required>
+              </div>
+
+              <div class="input-row">
+                <div class="input-group">
+                  <span class="material-icons-outlined">cake</span>
+                  <input type="date" id="dob" placeholder="Date of Birth" required>
+                </div>
+              </div>
+
+              <div class="radio-group" role="group" aria-label="Gender">
+                <label class="radio">
+                  <input type="radio" name="gender" value="Male">
+                  <span>Male</span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="gender" value="Female">
+                  <span>Female</span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="gender" value="Prefer not to say" checked>
+                  <span>Prefer not to say</span>
+                </label>
+              </div>
+            </section>
+
+            <!-- STEP 2: Address -->
+            <section class="form-step" data-step="2">
+              <div class="input-group">
+                <span class="material-icons-outlined">home</span>
+                <input type="text" id="houseStreet" placeholder="House No. / Street / Purok / Zone" required>
+              </div>
+              <div class="input-group">
+                <span class="material-icons-outlined">location_on</span>
+                <input type="text" id="barangay" placeholder="Barangay" required>
+              </div>
+              <div class="input-group">
+                <span class="material-icons-outlined">apartment</span>
+                <input type="text" id="city" placeholder="City / Municipality" required>
+              </div>
+              <div class="input-group">
+                <span class="material-icons-outlined">map</span>
+                <input type="text" id="province" placeholder="Province / Region" required>
+              </div>
+            </section>
+
+            <!-- STEP 3: Verification -->
+            <section class="form-step" data-step="3">
+              <div class="input-group">
+                <span class="material-icons-outlined">badge</span>
+                <select id="idType" required>
+                  <option value="" disabled selected>ID Type</option>
+                  <option>PhilID</option>
+                  <option>Driver’s License</option>
+                  <option>Passport</option>
+                  <option>SSS</option>
+                  <option>UMID</option>
+                  <option>Voter’s ID</option>
+                  <option>Other Government ID</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <span class="material-icons-outlined">pin</span>
+                <input type="text" id="idNumber" placeholder="ID Number" required>
+              </div>
+              <div class="file-row">
+                <label class="file-input">
+                  <input type="file" id="idUpload" accept="image/*" required>
+                  <span class="material-icons-outlined">upload_file</span>
+                  <em>Upload Valid ID</em>
+                </label>
+                <div class="thumb" id="idPreview" aria-label="ID preview"></div>
+              </div>
+              <div class="file-row">
+                <label class="file-input">
+                  <input type="file" id="selfieUpload" accept="image/*" required>
+                  <span class="material-icons-outlined">photo_camera</span>
+                  <em>Upload Selfie with ID</em>
+                </label>
+                <div class="thumb" id="selfiePreview" aria-label="Selfie preview"></div>
+              </div>
+            </section>
+
+            <!-- STEP 4: Security + Role + Agreements -->
+            <section class="form-step" data-step="4">
+              <div class="input-group">
+                <span class="material-icons-outlined">lock</span>
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="material-icons-outlined visibility-toggle" id="togglePassword">visibility_off</span>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">lock</span>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                <span class="material-icons-outlined visibility-toggle" id="toggleConfirmPassword">visibility_off</span>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">help_outline</span>
+                <select id="securityQuestion" required>
+                  <option value="" disabled selected>Security Question</option>
+                  <option>What is your mother’s maiden name?</option>
+                  <option>What was the name of your first pet?</option>
+                  <option>What city were you born in?</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <span class="material-icons-outlined">key</span>
+                <input type="text" id="securityAnswer" placeholder="Security Answer" required>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">group</span>
+                <select id="userRole" required>
+                  <option value="" disabled selected>User Role / Type</option>
+                  <option>Resident</option>
+                  <option>Volunteer</option>
+                  <option>Barangay Official</option>
+                  <option>CERV Member</option>
+                </select>
+              </div>
+
+              <div class="input-row">
+                <div class="input-group">
+                  <span class="material-icons-outlined">contacts</span>
+                  <input type="text" id="emergencyContactName" placeholder="Emergency Contact Name">
+                </div>
+                <div class="input-group">
+                  <span class="material-icons-outlined">contact_phone</span>
+                  <input type="tel" id="emergencyContactNumber" placeholder="Emergency Contact Number" inputmode="tel">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <span class="material-icons-outlined">notifications_active</span>
+                <select id="preferredComm" required>
+                  <option value="" disabled selected>Preferred Communication Method</option>
+                  <option>SMS</option>
+                  <option>Email</option>
+                  <option>App Notifications</option>
+                </select>
+              </div>
+
+              <div class="agreements">
+                <label class="checkbox">
+                  <input type="checkbox" id="agreeTerms" required>
+                  <span>I agree to the Terms & Conditions</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="agreePrivacy" required>
+                  <span>I have read the Privacy Policy</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="agreeConsent" required>
+                  <span>I consent to the use of my personal data for verification purposes</span>
+                </label>
+              </div>
+            </section>
+
+            <!-- Navigation buttons -->
+            <div class="actions">
+              <button type="button" class="btn btn-outline" id="backBtn">Back</button>
+              <button type="button" class="btn" id="nextBtn">Next</button>
+              <button type="submit" class="btn" id="submitBtn" disabled>Register</button>
+            </div>
+        </form>
+
+        <p class="login-link">
+          Already have an account?
+          <a href="login.html">Log In</a>
+        </p>
+
+        <footer>
+          <p>© 2025 CERV | Verified Reporting Platform</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>

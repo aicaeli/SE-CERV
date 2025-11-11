@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Reports - CERV</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  font-family: "Poppins", sans-serif;
+}
+
+/* === 📱 iPhone Frame === */
+.phone-frame {
+  width: 340px;
+  height: 690px;
+  background: #0a0a0a;
+  border-radius: 60px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === 🧩 App Screen === */
+.app-screen {
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  overflow-y: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
+}
+
+.app-screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* === iPhone Notch === */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 22px;
+  background: #111;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+/* === Home Indicator === */
+.phone-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 5px;
+  background: #333;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+.account-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centers child elements horizontally */
+  justify-content: flex-start;
+  padding:0 15px;  /* space on the sides */
+  box-sizing: border-box;   /* makes padding behave properly */
+}
+
+/* Header */
+.account-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 15px;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  color: white;
+  margin:0px 0 15px;
+  border-radius: 40px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  font-family: 'Poppins', sans-serif;
+  z-index: 5;
+}
+
+.account-header h1 {
+  font-size: 18px;
+  margin: 0;
+  letter-spacing:0.5px;
+  text-align:center;
+  flex-grow:1;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover { transform: scale(1.1); }
+
+.header-action {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+/* Buttons Container - New: to place buttons side by side */
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 10px; /* Adjust spacing as needed */
+}
+
+.btn-new-report {
+  background: #5c4de8;      /* Purple background */
+  color: #fff;
+  border: none;             /* Remove dark border */
+  border-radius: 30px;      /* Smooth, rounded edges */
+  padding: 10px 18px;       /* Slightly bigger for a modern look */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(92, 77, 232, 0.4); /* lighter, subtle shadow */
+  transition: all 0.2s ease;
+}
+
+.btn-new-report:hover {
+  background: #704de8;      /* Slightly lighter purple on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(92, 77, 232, 0.4);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 20;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* === Reports Table Wrapper (scroll container) === */
+.reports-table {
+  width: 100%;
+  max-width: 310px;
+  margin: 8px auto 0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;            /* make container flex */
+  flex-direction: column;   /* stack header and table */
+  flex: 1 1 auto;           /* fill available space */
+  overflow: hidden;         /* hide overflow outside container */
+}
+
+/* === Inner Scroll Area (dynamic scrolling) === */
+.reports-table .table-content {
+  flex: 1 1 auto;           /* grow to fill .reports-table */
+  overflow-y: auto;         /* enable vertical scroll */
+  scrollbar-width: none;    /* hide scrollbar (Firefox) */
+  -ms-overflow-style: none; /* hide scrollbar (Edge/IE) */
+}
+
+/* Hide scrollbar (Chrome, Safari, Edge) */
+.reports-table .table-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* === Actual Table Styling === */
+.reports-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.reports-table th,
+.reports-table td {
+  padding: 10px;
+  text-align: left;
+}
+
+.reports-table th {
+  background: #f1f1f1;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* === Status & Urgency Tags === */
+.status,
+.urgency {
+  padding: 3px 8px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.8em;
+}
+
+.status-pending { background: #fff3cd; color: #856404; }
+.status-resolved { background: #d4edda; color: #155724; }
+.urgency-high { background: #f8d7da; color: #721c24; }
+.urgency-medium { background: #fff3cd; color: #856404; }
+.urgency-low { background: #d1ecf1; color: #0c5460; }
+
+.modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 85%;
+  max-width: 350px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  /* Responsive size & smart scroll */
+  max-height: 90vh;             /* fit in phone view */
+  overflow-y: auto;             /* scroll only if needed */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content { transform: translateY(0); }
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+}
+
+.close-btn:hover { color: #000; }
+
+/* Form Improvements */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9em;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline: none;
+  border-color: #5c4de8;
+  box-shadow: 0 0 0 2px rgba(92, 77, 232, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-group input[type="file"] {
+  padding: 5px;
+  border: 1px dashed #ccc;
+  background: #f9f9f9;
+}
+
+.form-group input[type="file"]:focus {
+  border-color: #5c4de8;
+}
+
+.btn-primary {
+  background: #5c4de8;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(92, 77, 232, 0.4);
+}
+
+.btn-primary:hover {
+  background: #704de8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(92, 77, 232, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: none;
+}
+
+/* Animations */
+@keyframes rowFadeInUp {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  60% { opacity: 1; transform: translateY(-5px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.reports-table tbody tr.new-row {
+  animation: rowFadeInUp 0.6s ease forwards;
+}
+
+/* Filter Wrapper (button + dropdown) */
+.filter-wrapper {
+  position: relative;
+}
+
+/* Reuse modal styling */
+.modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 85%;
+  max-width: 350px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal.show .modal-content { transform: translateY(0); }
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+}
+
+.close-btn:hover { color: #000; }
+
+.header-buttons {
+  display: flex;
+  justify-content: space-between; /* pushes buttons to left & right */
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="phone-frame">
+  <div class="app-screen">
+    <!-- Header -->
+    <div class="account-header">
+      <button class="back-btn">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+      <h1>My Reports</h1>
+    </div>
+
+    <!-- Buttons Container - New: holds both buttons side by side -->
+    <div class="buttons-container">
+      <!-- New Report Button -->
+      <div class="new-report-wrapper">
+        <button id="newReportBtn" class="btn-new-report">
+          <span class="material-icons-outlined">add</span> New Report
+        </button>
+      </div>
+
+      <!-- Filter Button -->
+      <div class="filter-wrapper">
+        <button id="filterBtn" class="btn-new-report">
+          <span class="material-icons-outlined">filter_alt</span> Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Modal -->
+    <div id="filterModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeFilterModal">&times;</span>
+        <h2 style="margin-bottom: 20px; color: #5c4de8;">
+          <span class="material-icons-outlined">filter_alt</span> Filters
+        </h2>
+        
+        <div class="form-group">
+          <label for="statusFilterModal">Status</label>
+          <select id="statusFilterModal">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="urgencyFilterModal">Urgency</label>
+          <select id="urgencyFilterModal">
+            <option value="">All Urgency</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="applyFilterModalBtn" class="btn-primary">Apply</button>
+          <button id="resetFilterModalBtn" class="btn-primary" style="background:#ccc; color:#333;">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account container / Table -->
+    <div class="reports-table">
+      <div class="table-content">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Urgency</th>
+            </tr>
+          </thead>
+          <tbody id="reportsList">
+            <tr>
+              <td>001</td>
+              <td>Road Damage</td>
+              <td><span class="status status-pending">Pending</span></td>
+              <td><span class="urgency urgency-high">High</span></td>
+            </tr>
+            <tr>
+              <td>002</td>
+              <td>Flood</td>
+              <td><span class="status status-pending">Pending</span></td>
+              <td><span class="urgency urgency-high">High</span></td>
+            </tr>
+            <tr>
+              <td>003</td>
+              <td>Tumbak na mga Basura</td>
+              <td><span class="status status-resolved">Resolved</span></td>
+              <td><span class="urgency urgency-low">Low</span></td>
+            </tr>
+            <tr>
+              <td>004</td>
+              <td>No Water</td>
+              <td><span class="status status-pending">Pending</span></td>
+              <td><span class="urgency urgency-high">High</span></td>
+            </tr>
+            <tr>
+              <td>005</td>
+              <td>No Electricity</td>
+              <td><span class="status status-pending">Pending</span></td>
+              <td><span class="urgency urgency-high">High</span></td>
+            </tr>
+            <tr>
+              <td>006</td>
+              <td>Sunog</td>
+              <td><span class="status status-resolved">Resolved</span></td>
+              <td><span class="urgency urgency-medium">Medium</span></td>
+            </tr>
+            <tr>
+              <td>007</td>
+              <td>Crime</td>
+              <td><span class="status status-resolved">Resolved</span></td>
+              <td><span class="urgency urgency-high">High</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="newReportModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <h2 style="margin-bottom: 20px; color: #5c4de8;"><span class="material-icons-outlined">note_add</span> New Report</h2>
+    <form id="newReportForm">
+      <div class="form-group">
+        <label for="reportTitle">Report Title *</label>
+        <input type="text" id="reportTitle" placeholder="e.g., Pothole on Main Street" required>
+        <div class="error-message" id="titleError">Please enter a report title.</div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" placeholder="Provide details about the issue..." required></textarea>
+        <div class="error-message" id="descError">Please provide a description.</div>
+      </div>
+      <div class="form-group">
+        <label for="category">Category *</label>
+        <select id="category" required>
+          <option value="">Select Category</option>
+          <option value="Safety">Safety</option>
+          <option value="Maintenance">Maintenance</option>
+          <option value="Community">Community</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="error-message" id="catError">Please select a category.</div>
+      </div>
+      <div class="form-group">
+        <label for="urgency">Urgency *</label>
+        <select id="urgency" required>
+          <option value="">Select Urgency</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        <div class="error-message" id="urgError">Please select an urgency level.</div>
+      </div>
+      <div class="form-group">
+        <label for="location">Location *</label>
+        <input type="text" id="location" placeholder="e.g., 123 Main St, City, State" required>
+        <div class="error-message" id="locError">Please enter a location.</div>
+      </div>
+      <div class="form-group">
+        <label for="attachment">Attachments (Optional)</label>
+        <input type="file" id="attachment" accept="image/*,video/*,audio/*,.pdf,.doc,.docx" multiple>
+        <small style="color: #666; font-size: 0.8em;">Supported: Images, Videos, Audio, PDF, Docs</small>
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">Submit Report</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+// Back Button Functionality
+document.querySelector('.back-btn').addEventListener('click', () => {
+  window.history.back(); // Navigate back to the previous page (dashboard)
+});
+
+// Modal Handling
+const modal = document.getElementById("newReportModal");
+const openBtn = document.getElementById("newReportBtn");
+const closeBtn = document.getElementById("closeModal");
+const reportList = document.getElementById("reportsList");
+const form = document.getElementById("newReportForm");
+const submitBtn = document.getElementById("submitBtn");
+
+// Open modal
+openBtn.addEventListener("click", () => {
+  modal.classList.add("show");
+  document.getElementById("reportTitle").focus(); // Focus on first input
+});
+
+// Close modal
+closeBtn.addEventListener("click", () => modal.classList.remove("show"));
+window.addEventListener("click", e => { if(e.target === modal) modal.classList.remove("show"); });
+
+// Form validation and submission
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  
+  // Reset errors
+  document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+  
+  let isValid = true;
+  
+  // Validate title
+  if (!document.getElementById("reportTitle").value.trim()) {
+    document.getElementById("titleError").style.display = 'block';
+    isValid = false;
+  }
+  
+  // Validate description
+  if (!document.getElementById("description").value.trim()) {
+    document.getElementById("descError").style.display = 'block';
+    isValid = false;
+  }
+  
+  // Validate category
+  if (!document.getElementById("category").value) {
+    document.getElementById("catError").style.display = 'block';
+    isValid = false;
+  }
+  
+  // Validate urgency
+  if (!document.getElementById("urgency").value) {
+    document.getElementById("urgError").style.display = 'block';
+    isValid = false;
+  }
+  
+  // Validate location
+  if (!document.getElementById("location").value.trim()) {
+    document.getElementById("locError").style.display = 'block';
+    isValid = false;
+  }
+  
+  if (!isValid) return;
+  
+  // Disable submit button to prevent double submission
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+  
+  // Simulate submission (replace with actual API call)
+  setTimeout(() => {
+    const title = document.getElementById("reportTitle").value;
+    const urgency = document.getElementById("urgency").value;
+    const newId = String(reportList.children.length + 1).padStart(3, "0");
+    const urgencyClass = urgency === "High" ? "urgency-high" :
+                         urgency === "Medium" ? "urgency-medium" : "urgency-low";
+
+    const newRow = document.createElement("tr");
+    newRow.classList.add("new-row");
+    newRow.innerHTML = `
+      <td>${newId}</td>
+      <td>${title}</td>
+      <td><span class="status status-pending">Pending</span></td>
+      <td><span class="urgency ${urgencyClass}">${urgency}</span></td>
+    `;
+    reportList.appendChild(newRow);
+
+    form.reset();
+    modal.classList.remove("show");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Report";
+    
+    // Optional: Show success message
+    alert("Report submitted successfully!");
+  }, 1000); // Simulate delay
+  
+});
+const filterBtn = document.getElementById('filterBtn');
+const filterModal = document.getElementById('filterModal');
+const closeFilterModal = document.getElementById('closeFilterModal');
+
+const applyBtn = document.getElementById('applyFilterModalBtn');
+const resetBtn = document.getElementById('resetFilterModalBtn');
+
+const reportRows = document.querySelectorAll('#reportsList tr');
+
+// Open modal
+filterBtn.addEventListener('click', () => {
+  filterModal.classList.add('show');
+});
+
+// Close modal
+closeFilterModal.addEventListener('click', () => filterModal.classList.remove('show'));
+window.addEventListener('click', e => { if(e.target === filterModal) filterModal.classList.remove('show'); });
+
+// Apply filter
+applyBtn.addEventListener('click', () => {
+  const statusFilter = document.getElementById('statusFilterModal').value;
+  const urgencyFilter = document.getElementById('urgencyFilterModal').value;
+
+  reportRows.forEach(row => {
+    const statusText = row.querySelector('.status').textContent;
+    const urgencyText = row.querySelector('.urgency').textContent;
+
+    let show = true;
+    if(statusFilter && statusText !== statusFilter) show = false;
+    if(urgencyFilter && urgencyText !== urgencyFilter) show = false;
+
+    row.style.display = show ? '' : 'none';
+  });
+
+  filterModal.classList.remove('show');
+});
+
+// Reset filter
+resetBtn.addEventListener('click', () => {
+  document.getElementById('statusFilterModal').value = '';
+  document.getElementById('urgencyFilterModal').value = '';
+
+  reportRows.forEach(row => row.style.display = '');
+  filterModal.classList.remove('show');
+});
+
+</script>
+</body>
+</html>

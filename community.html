@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CERV - Community</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="community.css">
+</head>
+<style>
+    /* === 🌐 Base Layout === */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  font-family: "Poppins", sans-serif;
+}
+
+.phone-frame {
+  width: 340px;
+  height: 690px;
+  background: #0a0a0a;
+  border-radius: 60px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-screen {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  scrollbar-width: none;
+}
+.app-screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* iPhone Notch */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 22px;
+  background: #111;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+/* Home Indicator */
+.phone-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 5px;
+  background: #333;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+/* Fixed Header */
+.header {
+    display: flex;
+    position:sticky;
+    top:0;
+    z-index:10;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 15px;
+    background: linear-gradient(135deg, #a98bff, #5c4de8);
+    color:white;
+    margin:0px 0 15px;
+    border-radius: 40px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    font-family: 'Poppins', sans-serif;
+    z-index: 5;
+}
+.header h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  flex-grow: 1;
+}
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 10px;
+}
+
+/* Feed */
+.feed-section {
+  padding: 15px;
+}
+
+/* Post Card */
+.post {
+  background: white;
+  border-radius: 18px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: 0.2s;
+}
+.post:hover { transform: scale(1.01); }
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.post-user {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.verified {
+  color: #4b70ff;
+  font-size: 1rem;
+  margin-left: 3px;
+}
+.post-time {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.post-content {
+  font-size: 0.9rem;
+  color: #333;
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+.post-category {
+  background: #e7e4ff;
+  color: #5c4de8;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.post-media {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.post-link {
+  color: #5c4de8;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+/* Reactions */
+.reactions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #666;
+  font-size: 0.85rem;
+}
+.reaction {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.reaction.active {
+  color: #5c4de8;
+}
+.reaction:hover {
+  color: #5c4de8;
+  transform: scale(1.05);
+}
+
+/* Post Actions (Edit/Delete) */
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+.edit-btn, .delete-btn {
+  background: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.edit-btn:hover { background: #e0e0e0; }
+.delete-btn:hover { background: #ffdddd; color: #d00; }
+
+/* Comments Section */
+.comments-section {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+.comments-list {
+  margin-bottom: 10px;
+}
+.comment {
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+.comment-text {
+  color: #333;
+  line-height: 1.3;
+}
+.comment-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.comment-actions .reply-btn,
+.comment-actions .delete-comment-btn,
+.send-reply-btn {
+  background: #f3f3ff;
+  color: #5c4de8;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.comment-actions .delete-comment-btn {
+  background: #fff3f3;
+  color: #c44;
+}
+.reply-box {
+  display: flex;
+  gap: 6px;
+}
+.reply-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: #fff;
+}
+.replies-list {
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 2px solid #eee;
+}
+.comment-input {
+  width: calc(100% - 60px);
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.add-comment-btn {
+  background: #5c4de8;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+.add-comment-btn:hover { background: #4829c4; }
+
+/* Floating Button */
+.floating-btn {
+  position: fixed;              /* ✅ stays in place while scrolling */
+  bottom: 35px;                 /* spacing from bottom edge */
+  left: 50%;                    /* center horizontally relative to phone frame */
+  transform: translateX(90px); /* shift right to align with phone's edge (half of 340px width - margin) */
+  background: #5c4de8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  z-index: 15; /* above everything else */
+}
+
+.floating-btn:hover {
+  background: #4829c4;
+  transform: translateX(90px) scale(1.1); /* keep aligned while scaling */
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 85%;
+  position: relative;
+  animation: pop 0.3s ease;
+}
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-content form input,
+.modal-content form textarea,
+.modal-content form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  background: #f8f8f8;
+}
+.modal-content form textarea { resize: none; height: 80px; }
+
+.modal-content form button {
+  width: 100%;
+  background: #5c4de8;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.modal-content form button:hover { background: #4829c4; }
+</style>
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+      
+      <!-- Header -->
+      <div class="header">
+        <button class="back-btn" id="backBtn"><span class="material-icons-outlined">arrow_back</span></button>
+        <h2>Community Feed</h2>
+      </div>
+
+      <!-- Feed -->
+      <section class="feed-section" id="feed"></section>
+
+      <!-- Floating + Button -->
+      <button class="floating-btn" id="openFormBtn">
+        <span class="material-icons-outlined">add</span>
+      </button>
+
+      <!-- Modal Form -->
+      <div class="modal" id="postModal">
+        <div class="modal-content">
+          <span class="close-btn material-icons-outlined" id="closeFormBtn">close</span>
+          <h3>Create Post</h3>
+          <form id="postForm">
+            <input type="text" id="postTitle" placeholder="Title (optional)">
+            <textarea id="postContent" placeholder="What's happening?" required></textarea>
+
+            <select id="postCategory">
+              <option value="" disabled selected>Select Category</option>
+              <option value="Safety Concern">Safety Concern</option>
+              <option value="Neighborhood Support">Neighborhood Support</option>
+              <option value="Advice">Advice</option>
+              <option value="Others">Others</option>
+            </select>
+
+            <input type="text" id="postLocation" placeholder="Add Location (optional)">
+            <input type="text" id="postMentions" placeholder="Tag users or orgs (e.g. @Barangay)">
+            
+            <label for="media">Attach Media (optional)</label>
+            <input type="file" id="media" accept="image/*, video/*">
+            
+            <label for="link">Add Link (optional)</label>
+            <input type="url" id="link" placeholder="https://example.com">
+
+            <button type="submit">Post</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  
+<script>
+
+const feed = document.getElementById("feed");
+const openFormBtn = document.getElementById("openFormBtn");
+const closeFormBtn = document.getElementById("closeFormBtn");
+const modal = document.getElementById("postModal");
+const postForm = document.getElementById("postForm");
+const backBtn = document.getElementById("backBtn");
+let editingPost = null; // holds the post DOM element being edited, if any
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  window.location.href = "dashboard.html"; // ← change to your actual dashboard file
+});
+
+// === Open & Close Modal ===
+openFormBtn.addEventListener("click", () => {
+  const titleEl = document.querySelector("#postModal h3");
+  if (titleEl) titleEl.textContent = "Create Post";
+  editingPost = null;
+  postForm.reset();
+  modal.style.display = "flex";
+});
+closeFormBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  editingPost = null;
+  const titleEl = document.querySelector("#postModal h3");
+  if (titleEl) titleEl.textContent = "Create Post";
+});
+
+// === Reaction Interactivity ===
+function activateReactions(container) {
+  const reactions = container.querySelectorAll(".reaction");
+  reactions.forEach(reaction => {
+    reaction.addEventListener("click", () => {
+      const icon = reaction.querySelector("i.material-icons-outlined");
+      // Skip comment reaction from counting; it's purely a toggle to open/close comments
+      if (icon && icon.textContent === "chat_bubble_outline") {
+        return;
+      }
+      const countEl = reaction.querySelector(".count");
+      let count = parseInt(countEl.textContent);
+      if (reaction.classList.contains("active")) {
+        reaction.classList.remove("active");
+        countEl.textContent = count - 1;
+      } else {
+        reaction.classList.add("active");
+        countEl.textContent = count + 1;
+      }
+    });
+  });
+}
+
+// === Comments Functionality ===
+function activateComments(container) {
+  const commentReactionIcon = container.querySelector(".reactions .reaction i.material-icons-outlined");
+  const commentsSection = container.querySelector(".comments-section");
+  const addCommentBtn = container.querySelector(".add-comment-btn");
+  const commentInput = container.querySelector(".comment-input");
+  const commentsList = container.querySelector(".comments-list");
+  const commentReaction = container.querySelector(".reactions .reaction"); // first reaction is comments
+  const commentCountSpan = commentReaction ? commentReaction.querySelector(".count") : null;
+
+  function updateCount(delta) {
+    if (!commentCountSpan) return;
+    const current = parseInt(commentCountSpan.textContent || "0", 10);
+    const next = Math.max(0, current + delta);
+    commentCountSpan.textContent = String(next);
+  }
+
+  if (commentReactionIcon && commentReactionIcon.textContent === "chat_bubble_outline" && commentsSection) {
+    commentReaction.addEventListener("click", () => {
+      commentsSection.style.display = commentsSection.style.display === "block" ? "none" : "block";
+    });
+  }
+
+  function createCommentElement(text) {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("comment");
+    wrapper.innerHTML = `
+      <div class="comment-text">${text}</div>
+      <div class="comment-actions">
+        <button class="reply-btn" type="button">Reply</button>
+        <button class="delete-comment-btn" type="button">Delete</button>
+      </div>
+      <div class="reply-box" style="display:none; margin-top:6px;">
+        <input type="text" class="reply-input" placeholder="Write a reply...">
+        <button class="send-reply-btn" type="button">Send</button>
+      </div>
+      <div class="replies-list" style="margin-left:10px; margin-top:6px;"></div>
+    `;
+    return wrapper;
+  }
+
+  function postComment() {
+    if (!commentInput || !commentsList) return;
+    const commentText = commentInput.value.trim();
+    if (!commentText) return;
+    const commentEl = createCommentElement(commentText);
+    commentsList.appendChild(commentEl);
+    commentInput.value = "";
+    updateCount(1);
+  }
+
+  if (addCommentBtn) addCommentBtn.addEventListener("click", postComment);
+  if (commentInput) {
+    commentInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        postComment();
+      }
+    });
+  }
+
+  // Event delegation for reply/delete inside comments
+  if (commentsList) {
+    commentsList.addEventListener("click", (e) => {
+      const target = e.target;
+
+      // Toggle reply box
+      if (target.classList.contains("reply-btn")) {
+        const commentEl = target.closest(".comment");
+        const box = commentEl.querySelector(".reply-box");
+        box.style.display = box.style.display === "none" ? "block" : "none";
+        const input = box.querySelector(".reply-input");
+        if (box.style.display === "block" && input) input.focus();
+      }
+
+      // Delete comment or reply
+      if (target.classList.contains("delete-comment-btn")) {
+        const commentEl = target.closest(".comment");
+        const isReply = !!target.closest(".replies-list");
+        commentEl.remove();
+        updateCount(-1);
+      }
+
+      // Send reply (button)
+      if (target.classList.contains("send-reply-btn")) {
+        const commentEl = target.closest(".comment");
+        const replyInput = commentEl.querySelector(".reply-input");
+        const repliesList = commentEl.querySelector(".replies-list");
+        const txt = replyInput.value.trim();
+        if (!txt) return;
+        const replyEl = createCommentElement(txt);
+        // Replies shouldn't include another reply box at creation depth? Keep for nested if desired.
+        repliesList.appendChild(replyEl);
+        replyInput.value = "";
+        // hide box after sending
+        const box = commentEl.querySelector(".reply-box");
+        if (box) box.style.display = "none";
+        updateCount(1);
+      }
+    });
+
+    // Enter-to-send inside reply input
+    commentsList.addEventListener("keydown", (e) => {
+      const target = e.target;
+      if (target.classList && target.classList.contains("reply-input") && e.key === "Enter") {
+        e.preventDefault();
+        const commentEl = target.closest(".comment");
+        const repliesList = commentEl.querySelector(".replies-list");
+        const txt = target.value.trim();
+        if (!txt) return;
+        const replyEl = createCommentElement(txt);
+        repliesList.appendChild(replyEl);
+        target.value = "";
+        const box = commentEl.querySelector(".reply-box");
+        if (box) box.style.display = "none";
+        updateCount(1);
+      }
+    });
+  }
+}
+
+// === Edit/Delete Functionality ===
+function activatePostActions(container, isUserPost = false) {
+  if (!isUserPost) return;
+
+  const editBtn = container.querySelector(".edit-btn");
+  const deleteBtn = container.querySelector(".delete-btn");
+
+  editBtn.addEventListener("click", () => {
+    // Populate form with existing values
+    const titleEl = container.querySelector("h4");
+    const contentEl = container.querySelector(".post-content");
+    const categoryEl = container.querySelector(".post-category");
+    const linkEl = container.querySelector(".post-link");
+    const mediaEl = container.querySelector(".post-media");
+
+    // Mentions and location are paragraphs; detect by strong label or emoji
+    const paragraphEls = Array.from(container.querySelectorAll("p"));
+    const mentionsEl = paragraphEls.find(p => (p.querySelector("strong") && p.querySelector("strong").textContent.trim().startsWith("Tagged")));
+    const locationEl = paragraphEls.find(p => p.textContent.trim().startsWith("📍"));
+
+    document.getElementById("postTitle").value = titleEl ? titleEl.textContent : "";
+    document.getElementById("postContent").value = contentEl ? contentEl.textContent : "";
+    document.getElementById("postCategory").value = categoryEl ? categoryEl.textContent : "";
+    document.getElementById("postLocation").value = locationEl ? locationEl.textContent.replace("📍", "").trim() : "";
+    document.getElementById("postMentions").value = mentionsEl ? mentionsEl.textContent.replace("Tagged:", "").trim() : "";
+    document.getElementById("link").value = linkEl ? linkEl.getAttribute("href") || "" : "";
+    const mediaInput = document.getElementById("media");
+    if (mediaInput) mediaInput.value = ""; // cannot prefill for security; user can upload to replace
+
+    // Switch modal to Edit mode
+    const modalTitle = document.querySelector("#postModal h3");
+    if (modalTitle) modalTitle.textContent = "Edit Post";
+    editingPost = container;
+    modal.style.display = "flex";
+  });
+
+  deleteBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to delete this post?")) {
+      container.remove();
+    }
+  });
+}
+
+// === Create Post ===
+postForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("postTitle").value.trim();
+  const content = document.getElementById("postContent").value.trim();
+  const category = document.getElementById("postCategory").value;
+  const location = document.getElementById("postLocation").value.trim();
+  const mentions = document.getElementById("postMentions").value.trim();
+  const mediaInput = document.getElementById("media");
+  const link = document.getElementById("link").value.trim();
+
+  let mediaHTML = "";
+  if (mediaInput.files && mediaInput.files[0]) {
+    const file = mediaInput.files[0];
+    const mediaURL = URL.createObjectURL(file);
+    mediaHTML = file.type.startsWith("video")
+      ? `<video controls class="post-media"><source src="${mediaURL}" type="${file.type}"></video>`
+      : `<img src="${mediaURL}" class="post-media" alt="post media">`;
+  }
+
+  // If editing an existing post, update it in place
+  if (editingPost) {
+    const container = editingPost;
+
+    // Title
+    const existingTitleEl = container.querySelector("h4");
+    if (title && !existingTitleEl) {
+      const titleNode = document.createElement("h4");
+      titleNode.textContent = title;
+      const headerEl = container.querySelector(".post-header");
+      if (headerEl && headerEl.nextSibling) {
+        container.insertBefore(titleNode, headerEl.nextSibling);
+      } else {
+        container.appendChild(titleNode);
+      }
+    } else if (title && existingTitleEl) {
+      existingTitleEl.textContent = title;
+    } else if (!title && existingTitleEl) {
+      existingTitleEl.remove();
+    }
+
+    // Content
+    const contentEl = container.querySelector(".post-content");
+    if (contentEl) contentEl.textContent = content;
+
+    // Mentions
+    const paraEls = Array.from(container.querySelectorAll("p"));
+    let mentionsEl = paraEls.find(p => (p.querySelector("strong") && p.querySelector("strong").textContent.trim().startsWith("Tagged")));
+    if (mentions && !mentionsEl) {
+      mentionsEl = document.createElement("p");
+      mentionsEl.innerHTML = `<strong>Tagged:</strong> ${mentions}`;
+      const anchor = container.querySelector(".post-content");
+      if (anchor && anchor.nextSibling) {
+        container.insertBefore(mentionsEl, anchor.nextSibling);
+      } else {
+        container.appendChild(mentionsEl);
+      }
+    } else if (mentions && mentionsEl) {
+      mentionsEl.innerHTML = `<strong>Tagged:</strong> ${mentions}`;
+    } else if (!mentions && mentionsEl) {
+      mentionsEl.remove();
+    }
+
+    // Category
+    let categoryEl = container.querySelector(".post-category");
+    if (category && !categoryEl) {
+      categoryEl = document.createElement("span");
+      categoryEl.className = "post-category";
+      categoryEl.textContent = category;
+      const after = container.querySelector(".post-content");
+      if (after) {
+        after.insertAdjacentElement("afterend", categoryEl);
+      } else {
+        container.appendChild(categoryEl);
+      }
+    } else if (category && categoryEl) {
+      categoryEl.textContent = category;
+    } else if (!category && categoryEl) {
+      categoryEl.remove();
+    }
+
+    // Location
+    let locationEl = paraEls.find(p => p.textContent.trim().startsWith("📍"));
+    if (location && !locationEl) {
+      locationEl = document.createElement("p");
+      locationEl.textContent = `📍 ${location}`;
+      const refNode = categoryEl || container.querySelector(".post-content");
+      if (refNode) {
+        refNode.insertAdjacentElement("afterend", locationEl);
+      } else {
+        container.appendChild(locationEl);
+      }
+    } else if (location && locationEl) {
+      locationEl.textContent = `📍 ${location}`;
+    } else if (!location && locationEl) {
+      locationEl.remove();
+    }
+
+    // Media
+    let existingMediaEl = container.querySelector(".post-media");
+    if (mediaHTML) {
+      if (existingMediaEl) {
+        // Replace existing media
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = mediaHTML;
+        const newMedia = wrapper.firstChild;
+        existingMediaEl.replaceWith(newMedia);
+      } else {
+        const ref = container.querySelector(".post-actions") || container.querySelector(".reactions");
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = mediaHTML;
+        const newMedia = wrapper.firstChild;
+        if (ref) ref.insertAdjacentElement("beforebegin", newMedia);
+        else container.appendChild(newMedia);
+      }
+    } // if no new media chosen, keep existing
+
+    // Link
+    let linkEl = container.querySelector(".post-link");
+    if (link && !linkEl) {
+      linkEl = document.createElement("a");
+      linkEl.className = "post-link";
+      linkEl.href = link;
+      linkEl.target = "_blank";
+      linkEl.textContent = link;
+      const ref = container.querySelector(".post-actions") || container.querySelector(".reactions");
+      if (ref) ref.insertAdjacentElement("beforebegin", linkEl);
+      else container.appendChild(linkEl);
+    } else if (link && linkEl) {
+      linkEl.href = link;
+      linkEl.textContent = link;
+    } else if (!link && linkEl) {
+      linkEl.remove();
+    }
+
+    // Close and reset form
+    modal.style.display = "none";
+    postForm.reset();
+    const modalTitle = document.querySelector("#postModal h3");
+    if (modalTitle) modalTitle.textContent = "Create Post";
+    editingPost = null;
+    return;
+  }
+
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const verified = true;
+  const avatar = "https://via.placeholder.com/40";
+
+  const post = document.createElement("div");
+  post.classList.add("post");
+  post.innerHTML = `
+    <div class="post-header">
+      <img src="${avatar}" class="post-avatar" alt="user">
+      <div>
+        <span class="post-user">CERV User</span>
+        ${verified ? '<span class="material-icons-outlined verified">verified</span>' : ''}
+        <div class="post-time">${timestamp}</div>
+      </div>
+    </div>
+    ${title ? `<h4>${title}</h4>` : ""}
+    <p class="post-content">${content}</p>
+    ${mentions ? `<p><strong>Tagged:</strong> ${mentions}</p>` : ""}
+    ${category ? `<span class="post-category">${category}</span>` : ""}
+    ${location ? `<p><strong>📍 ${location}</strong></p>` : ""}
+    ${mediaHTML}
+    ${link ? `<a href="${link}" target="_blank" class="post-link">${link}</a>` : ""}
+    <div class="reactions">
+      <div class="reaction"><i class="material-icons-outlined">chat_bubble_outline</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">repeat</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">thumb_up</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">report_problem</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">favorite_border</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">share</i><span class="count">0</span></div>
+    </div>
+    <div class="comments-section" style="display: none;">
+      <div class="comments-list"></div>
+      <input type="text" class="comment-input" placeholder="Add a comment...">
+      <button class="add-comment-btn">Post</button>
+    </div>
+    <div class="post-actions">
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>
+    </div>
+  `;
+  feed.prepend(post);
+  activateReactions(post);
+  activateComments(post);
+  activatePostActions(post, true);
+  modal.style.display = "none";
+  postForm.reset();
+});
+
+// === Sample Posts ===
+const samplePosts = [
+  {
+    user: "Barangay Admin",
+    verified: true,
+    content: "Reminder: Scheduled clean-up drive this Saturday, 7 AM at Colon Street. Volunteers needed!",
+    time: "2h ago",
+    category: "Neighborhood Support",
+    avatar: "10491830.jpg"
+  },
+  {
+    user: "CERV Member",
+    verified: false,
+    content: "Does anyone else have a power out in Parrdo?",
+    time: "30m ago",
+    category: "Safety Concern",
+    avatar: "7309681.jpg"
+  }
+];
+
+samplePosts.forEach(p => {
+  const post = document.createElement("div");
+  post.classList.add("post");
+  post.innerHTML = `
+    <div class="post-header">
+      <img src="${p.avatar}" class="post-avatar" alt="user">
+      <div>
+        <span class="post-user">${p.user}</span>
+        ${p.verified ? '<span class="material-icons-outlined verified">verified</span>' : ''}
+        <div class="post-time">${p.time}</div>
+      </div>
+    </div>
+    <p class="post-content">${p.content}</p>
+    ${p.category ? `<span class="post-category">${p.category}</span>` : ""}
+    <div class="reactions">
+      <div class="reaction"><i class="material-icons-outlined">chat_bubble_outline</i><span class="count">1</span></div>
+      <div class="reaction"><i class="material-icons-outlined">repeat</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">thumb_up</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">report_problem</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">favorite_border</i><span class="count">0</span></div>
+      <div class="reaction"><i class="material-icons-outlined">share</i><span class="count">0</span></div>
+    </div>
+    <div class="comments-section" style="display: none;">
+      <div class="comments-list">
+        <div class="comment">
+          <div class="comment-text">Thanks for the update! I’ll be there.</div>
+          <div class="comment-actions">
+            <button class="reply-btn" type="button">Reply</button>
+            <button class="delete-comment-btn" type="button">Delete</button>
+          </div>
+          <div class="reply-box" style="display:none; margin-top:6px;">
+            <input type="text" class="reply-input" placeholder="Write a reply...">
+            <button class="send-reply-btn" type="button">Send</button>
+          </div>
+          <div class="replies-list" style="margin-left:10px; margin-top:6px;"></div>
+        </div>
+      </div>
+      <input type="text" class="comment-input" placeholder="Add a comment...">
+      <button class="add-comment-btn">Post</button>
+    </div>
+  `;
+  feed.appendChild(post);
+  activateReactions(post);
+  activateComments(post);
+});
+
+  </script>
+</body>
+</html>

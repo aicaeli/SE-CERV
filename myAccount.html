@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account - CERV</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #007bff;
+      --secondary: #6c757d;
+      --danger: #dc3545;
+      --background: #f3f5fa;
+      --card-bg: #fff;
+      --border: #e0e6ed;
+      --text-dark: #212529;
+      --text-light: #6c757d;
+      --radius: 16px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: var(--background);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* 📱 Phone Frame */
+    .phone-frame {
+      background: #fff;
+      width: 400px;
+      height: 700px;
+      border-radius: 36px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+    }
+
+    /* 🔹 Header */
+    .account-header {
+      display: flex;
+      align-items: center;
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .account-header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* 🔹 Tabs */
+    .account-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background-color: #fafbff;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-light);
+      transition: 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+      background-color: #eef4ff;
+    }
+
+    /* 🔹 Main Container */
+    .account-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+      scrollbar-width: thin;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* 🔹 Form Inputs */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+      outline: none;
+    }
+
+    /* 🔹 Upload Preview */
+    .upload-preview {
+      margin-top: 8px;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fb;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .upload-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+    }
+
+    /* 🔹 Buttons */
+    .btn-primary,
+    .btn-danger,
+    .btn-secondary {
+      display: inline-block;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #0069d9; }
+
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #c82333; }
+
+    .btn-secondary { background: var(--secondary); color: #fff; }
+    .btn-secondary:hover { background: #5a6268; }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* 🔹 Status message */
+    .status-message {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 10px;
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    /* 🔹 FAQ */
+    .faq-section {
+      background: #f9f9fb;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .faq-section details {
+      margin-bottom: 6px;
+      border-left: 3px solid var(--primary);
+      padding-left: 8px;
+    }
+
+    .faq-section summary {
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    /* Add slight bottom padding for scroll area */
+    .account-container::after {
+      content: "";
+      display: block;
+      height: 40px;
+    }
+    .profile-picture-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-pic-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #007bff;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.profile-pic-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-btn {
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.9em;
+  transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: #0056b3;
+}
+
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <!-- Header -->
+    <div class="account-header">
+      <button class="back-btn" onclick="window.history.back()">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+      <h1>My Account</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="account-tabs">
+      <button class="tab-btn active" data-tab="profile">Profile</button>
+      <button class="tab-btn" data-tab="verify">Verify</button>
+      <button class="tab-btn" data-tab="support">Support</button>
+      <button class="tab-btn" data-tab="logout">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="account-container">
+      <!-- Profile Tab -->
+      <div id="profile" class="tab-content active">
+        <h2><span class="material-icons-outlined">account_circle</span> Profile Settings</h2>
+
+          <!-- 👤 Profile Picture Upload -->
+        <div class="profile-picture-section">
+         <div class="profile-pic-preview" id="profilePicPreview">
+           <img src="profile.jpg" alt="Profile Picture">
+        </div>
+          <label for="profilePicUpload" class="upload-btn">Change Photo</label>
+          <input type="file" id="profilePicUpload" accept="image/*" style="display: none;">
+        </div>
+
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number" required>
+          </div>
+          <div class="form-group">
+            <label for="bio">Bio (Optional)</label>
+            <textarea id="bio" placeholder="Tell us about yourself"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+      </div>
+
+      <!-- Verify Tab -->
+      <div id="verify" class="tab-content">
+        <h2><span class="material-icons-outlined">verified_user</span> Verify Identity</h2>
+        <p>Upload a clear selfie and ID photo. Files must be under 5MB (JPG/PNG).</p>
+        <form id="verifyForm">
+          <div class="form-group">
+            <label for="selfieUpload">Selfie</label>
+            <input type="file" id="selfieUpload" accept="image/*" required>
+            <div id="selfiePreview" class="upload-preview">No image uploaded</div>
+          </div>
+          <div class="form-group">
+            <label for="idUpload">Valid ID</label>
+            <input type="file" id="idUpload" accept="image/*" required>
+            <div id="idPreview" class="upload-preview">No image uploaded</div>
+          </div>
+          <button type="submit" class="btn-primary">Submit Verification</button>
+        </form>
+        <div id="verificationStatus" class="status-message"></div>
+      </div>
+
+      <!-- Support Tab -->
+      <div id="support" class="tab-content">
+        <h2><span class="material-icons-outlined">help</span> Support</h2>
+        <div class="faq-section">
+          <h3>FAQ</h3>
+          <details>
+            <summary>How do I submit a report?</summary>
+            <p>Click “Submit Report” from your dashboard and fill out the form.</p>
+          </details>
+          <details>
+            <summary>What if verification fails?</summary>
+            <p>Ensure your images are clear and match your details. Contact support if issues persist.</p>
+          </details>
+        </div>
+        <form id="supportForm">
+          <div class="form-group">
+            <label for="supportSubject">Subject</label>
+            <input type="text" id="supportSubject" placeholder="Brief description" required>
+          </div>
+          <div class="form-group">
+            <label for="supportMessage">Message</label>
+            <textarea id="supportMessage" placeholder="Describe your issue" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Send Ticket</button>
+        </form>
+      </div>
+
+      <!-- Logout Tab -->
+      <div id="logout" class="tab-content">
+        <h2><span class="material-icons-outlined">logout</span> Confirm Logout</h2>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <button id="confirmLogout" class="btn-danger">Yes, Logout</button>
+          <button class="btn-secondary" onclick="switchTab('profile')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Switch tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // File preview
+    function previewFile(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          document.getElementById(previewId).innerHTML = `<img src="${reader.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    document.getElementById('selfieUpload').addEventListener('change', function() {
+      previewFile(this, 'selfiePreview');
+    });
+
+    document.getElementById('idUpload').addEventListener('change', function() {
+      previewFile(this, 'idPreview');
+    });
+
+    // Forms
+    document.getElementById('verifyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = document.getElementById('verificationStatus');
+      status.textContent = 'Verification submitted successfully! You’ll be notified within 24 hours.';
+      status.className = 'status-message success';
+      status.style.display = 'block';
+    });
+
+    document.getElementById('supportForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Support ticket submitted successfully!');
+    });
+
+    document.getElementById('profileForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+    });
+
+    document.getElementById('confirmLogout').addEventListener('click', () => {
+      alert('Logged out successfully!');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CERV Mobile Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+      <div class="dashboard">
+
+        <!-- === Header Section with User Profile === -->
+        <div class="header">
+          <div class="header-left">
+            <img src="cerv logo2.png" alt="CERV Logo" class="logo" id="logo">
+            <div class="welcome-text">
+              <p class="greeting">Welcome to CERV,</p>
+              <h2><span id="username">Boss Lotlot</span></h2>
+            </div>
+          </div>
+          <div class="profile-wrapper">
+            <img src="profile.jpg" alt="Profile" class="profile-pic" id="profilePic">
+            <input type="file" id="uploadProfile" accept="image/*" hidden>
+          </div>
+        </div>
+
+        <!-- === Quick Action Buttons === -->
+    <div class="quick-actions">
+       <a href="myReport.html" class="action-btn">
+        <span class="material-icons-outlined">add_location_alt</span>
+        <span class="action-text">Report</span>
+      </a>
+
+      <a href="emergency.html" class="action-btn">
+       <span class="material-icons-outlined">phone_in_talk</span>
+       <span class="action-text">Emergency</span>
+      </a>
+
+      <a href="askHelp.html" class="action-btn">
+       <span class="material-icons-outlined">volunteer_activism</span>
+       <span class="action-text">Ask Help</span>
+      </a>
+    </div>
+        <!-- === Map Preview Section === -->
+        <div class="map-preview">
+          <div class="map-header">
+            <h3>Map Overview</h3>
+            <button class="refresh-btn material-icons-outlined" id="refreshMap">refresh</button>
+          </div>
+          <div class="map-placeholder" id="mapPlaceholder">
+            🗺️ Map loading...
+          </div>
+        </div>
+
+        <!-- === Community Highlights Section === -->
+        <div class="community-highlights">
+          <h3>Community Highlights</h3>
+          <div class="highlight-scroll-vertical" id="highlightScroll">
+            <div class="card">
+              <h4>Streetlight Fixed</h4>
+              <p>Barangay Zone 2 successfully resolved a maintenance report.</p>
+            </div>
+            <div class="card">
+              <h4>Tree Planting</h4>
+              <p>Join us this weekend for a clean-up and tree planting drive.</p>
+            </div>
+            <div class="card">
+              <h4>Report Milestone</h4>
+              <p>Over 1,000 reports submitted by residents this month!</p>
+            </div>
+            <div class="card">
+              <h4>Community Patrol</h4>
+              <p>Volunter teams will patrol every night this week for safety checks.</p>
+            </div>
+            <div class="card">
+              <h4>Recycling Workshop</h4>
+              <p>Learn how to recycle and upcycle at our baranghay hall on Friday.</p>
+            </div>
+            <div class="card">
+              <h4>New Emergency Hotline</h4>
+              <p>Residents can now call 155-CERV for immediate assistance 24/7.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- === Bottom Navigation === -->
+      <nav class="bottom-nav">
+        <button class="nav-btn active">
+          <span class="material-icons-outlined">home</span>
+        </button>
+        <button class="nav-btn">
+          <span class="material-icons-outlined">map</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='community.html'">
+          <span class="material-icons-outlined">groups</span>
+        </button>
+        <button class="nav-btn">
+          <span class="material-icons-outlined">notifications</span>
+        </button>
+        <button class="nav-btn">
+          <span class="material-icons-outlined">person</span>
+        </button>
+      </nav>
+
+
+  <!-- 💬 AI Chatbot -->
+<div class="chatbot-container">
+  <button class="chatbot-btn" id="chatbotToggle">
+    <span class="material-icons-outlined">smart_toy</span>
+  </button>
+
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chat-header">
+      <span>AI Chatbot</span>
+      <button class="close-chat" id="closeChat">&times;</button>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <p class="bot">Hello! How can I help you today? 🤖</p>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type a message..." />
+      <button id="sendMsg">Send</button>
+    </div>
+  </div>
+</div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

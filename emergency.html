@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CERV Emergency Hotline</title>
+  <link rel="stylesheet" href="hotline.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<style>
+    /* === 🌐 Base Layout (From Your CERV Layout) === */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  font-family: "Poppins", sans-serif;
+}
+
+.phone-frame {
+  width: 340px;
+  height: 690px;
+  background: #0a0a0a;
+  border-radius: 60px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-screen {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  scrollbar-width: none;
+}
+.app-screen::-webkit-scrollbar {
+  display: none;
+}
+/* === iPhone Notch === */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 22px;
+  background: #111;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+/* === Home Indicator === */
+.phone-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 5px;
+  background: #333;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+/* === 🔹 Header === */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 15px;
+    background: linear-gradient(135deg, #a98bff, #5c4de8);
+    color:white;
+    margin:0px 0 15px;
+    border-radius: 40px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    font-family: 'Poppins', sans-serif;
+    z-index: 5;
+}
+.header h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+
+/* === 🔹 Tabs === */
+.service-tabs {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px 5px;
+  background: #fafaff;
+}
+.tab {
+  flex: 1 1 30%;
+  background: #ebeaff;
+  border: none;
+  margin: 4px;
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.tab.active {
+  background: #5c4de8;
+  color: white;
+  font-weight: 600;
+}
+
+/* === 🔹 Search Bar === */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f1f1ff;
+  border-radius: 14px;
+  margin: 10px 15px;
+  padding: 6px 10px;
+}
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+  font-size: 13px;
+  color: #333;
+}
+.search-bar .material-icons-outlined {
+  color: #5c4de8;
+  margin-right: 6px;
+}
+
+/* === 🔹 Hotline List === */
+.hotline-list {
+  padding: 5px 15px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hotline-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+}
+.hotline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(92,77,232,0.2);
+}
+.hotline-info h4 {
+  font-size: 14px;
+  margin: 0;
+  color: #5c4de8;
+}
+.hotline-info p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #555;
+}
+.call-btn {
+  background: #5c4de8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.call-btn:hover {
+  background: #4337c9;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover { transform: scale(1.1); }
+
+.header-action {
+  display: flex;
+  gap: 8px;
+}
+
+/* === 🔴 Floating 911 Button === */
+.hotline911 {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  background: #ff2d55;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 10px 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(255, 45, 85, 0.4);
+  z-index: 99;
+  animation: popIn 0.6s ease;
+  animation: pulse911 1.8s infinite;
+}
+.hotline911:hover {
+  background: #e02041;
+}
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes pulse911 {
+  0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(255,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+}
+
+</style>
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+      
+      <!-- 🔹 Header -->
+    <div class="header">
+      <button class="back-btn">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+        <h2>Emergency Hotlines</h2>
+    </div>
+
+      </header>
+
+      <!-- 🔹 Service Tabs -->
+      <div class="service-tabs">
+        <button class="tab active" data-service="police">👮 Police</button>
+        <button class="tab" data-service="fire">🔥 Fire Dept</button>
+        <button class="tab" data-service="medical">🏥 Medical</button>
+        <button class="tab" data-service="rescue">🚨 Rescue</button>
+        <button class="tab" data-service="community">🤝 Crisis Team</button>
+      </div>
+
+      <!-- 🔹 Search Bar -->
+      <div class="search-bar">
+        <span class="material-icons-outlined">search</span>
+        <input type="text" id="searchInput" placeholder="Search area or city (e.g. Pardo, Cebu)" />
+      </div>
+
+      <!-- 🔹 Hotline List -->
+      <div class="hotline-list" id="hotlineList">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- 🔹 Floating 911 Button -->
+      <button class="hotline911">
+        <span class="material-icons-outlined">call</span> 911
+      </button>
+    </div>
+  </div>
+
+  <script>
+  document.querySelector('.back-btn').addEventListener('click', () => {
+  window.history.back(); // Navigate back to the previous page (dashboard)
+});
+    // === Hotline Data (Hardcoded for Now) ===
+const hotlineData = {
+  police: [
+    { area: "Cebu City Police Office", number: "032-255-1663" },
+    { area: "Pardo Police Station", number: "032-261-1234" },
+    { area: "Mandaue Police", number: "032-238-2111" },
+  ],
+  fire: [
+    { area: "Cebu City Fire Dept", number: "032-254-9141" },
+    { area: "Pardo Fire Station", number: "032-262-5678" },
+  ],
+  medical: [
+    { area: "Cebu City Hospital", number: "032-255-5555" },
+    { area: "Vicente Sotto Memorial", number: "032-253-9898" },
+  ],
+  rescue: [
+    { area: "Cebu Rescue Unit", number: "032-233-3333" },
+    { area: "Emergency Response Team", number: "032-266-4444" },
+  ],
+  community: [
+    { area: "Crisis Team Cebu", number: "032-278-9999" },
+    { area: "Barangay Help Center", number: "032-245-1122" },
+  ],
+};
+
+// === DOM Elements ===
+const hotlineList = document.getElementById("hotlineList");
+const searchInput = document.getElementById("searchInput");
+const tabs = document.querySelectorAll(".tab");
+
+let currentService = "police";
+
+// === Render Hotline List ===
+function renderHotlines(service) {
+  hotlineList.innerHTML = "";
+  const list = hotlineData[service];
+  list.forEach(h => {
+    const card = document.createElement("div");
+    card.className = "hotline-card";
+    card.innerHTML = `
+      <div class="hotline-info">
+        <h4>${h.area}</h4>
+        <p>${h.number}</p>
+      </div>
+      <button class="call-btn material-icons-outlined" onclick="callNumber('${h.number}')">call</button>
+    `;
+    hotlineList.appendChild(card);
+  });
+}
+renderHotlines(currentService);
+
+// === Tab Switching ===
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentService = tab.dataset.service;
+    renderHotlines(currentService);
+    searchInput.value = "";
+  });
+});
+
+// === Search Filter ===
+searchInput.addEventListener("input", () => {
+  const keyword = searchInput.value.toLowerCase();
+  const list = hotlineData[currentService].filter(h =>
+    h.area.toLowerCase().includes(keyword)
+  );
+  hotlineList.innerHTML = "";
+  list.forEach(h => {
+    const card = document.createElement("div");
+    card.className = "hotline-card";
+    card.innerHTML = `
+      <div class="hotline-info">
+        <h4>${h.area}</h4>
+        <p>${h.number}</p>
+      </div>
+      <button class="call-btn material-icons-outlined" onclick="callNumber('${h.number}')">call</button>
+    `;
+    hotlineList.appendChild(card);
+  });
+});
+
+// === Call Simulation ===
+function callNumber(num) {
+  alert(`📞 Calling ${num}...`);
+}
+// Select the button by class name
+const hotline911 = document.getElementsByClassName("hotline911")[0]; // get the first element
+
+// Add click event listener
+hotline911.addEventListener("click", function() {
+  callNumber("911");
+});
+
+  </script>
+</body>
+</html>

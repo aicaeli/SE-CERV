@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CERV | Login</title>
+
+  <!-- Google Fonts + Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+
+      <div class="login-container">
+        <div class="logo">
+          <img src="cerv logo.png" alt="CERV Logo" class="app-logo">
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Log in to continue your report journey</p>
+
+        <form id="loginForm">
+          <div class="input-group">
+            <span class="material-icons-outlined">email</span>
+            <input type="email" id="email" placeholder="Email Address" required>
+          </div>
+
+          <div class="input-group">
+            <span class="material-icons-outlined">lock</span>
+            <input type="password" id="password" placeholder="Password" required>
+            <span class="material-icons-outlined visibility-toggle" id="togglePassword">visibility_off</span>
+          </div>
+
+          <button type="submit" class="btn">Log In</button>
+        </form>
+
+        <p class="signup-link">
+          Don't have an account?
+          <a href="signup.html">Register</a>
+        </p>
+
+        <footer>
+          <p>© 2025 CERV | Verified Reporting Platform</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

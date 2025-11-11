@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CERV - Ask for Help</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="ask-for-help.css">
+</head>
+<style>
+    /* === 🌐 Base Layout === */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  font-family: "Poppins", sans-serif;
+}
+
+.phone-frame {
+  width: 340px;
+  height: 690px;
+  background: #0a0a0a;
+  border-radius: 60px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-screen {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  scrollbar-width: none;
+}
+.app-screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* iPhone Notch */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 22px;
+  background: #111;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+/* Home Indicator */
+.phone-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 5px;
+  background: #333;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #a98bff, #5c4de8);
+  color: white;
+  border-radius: 40px;
+  margin: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  font-family: 'Poppins', sans-serif;
+  z-index: 5;
+}
+.header h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+/* === Form Styles === */
+.help-form-section {
+  padding: 15px;
+  margin: 0 15px 20px 15px;
+  background: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.help-form-section form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.help-form-section form textarea,
+.help-form-section form select,
+.help-form-section form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.help-form-section form button {
+  margin-top: 20px;
+  width: 100%;
+  background: #5c4de8;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.help-form-section form button:hover {
+  background: #4829c4;
+}
+
+/* === Community Feed === */
+.community-feed {
+  padding: 15px;
+}
+
+.community-feed h2 {
+  margin-bottom: 10px;
+  color: #5c4de8;
+}
+
+.feed-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.feed-item p {
+  margin-bottom: 8px;
+}
+
+.feed-meta {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.feed-photo {
+  margin-top: 8px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.feed-location {
+  font-style: italic;
+  color: #555;
+  margin-top: 4px;
+}
+</style>
+
+<body>
+  <div class="phone-frame">
+    <div class="app-screen">
+      <!-- Header -->
+      <div class="header">
+        <h2>Ask for Help</h2>
+      </div>
+
+      <!-- Form Section -->
+      <section class="help-form-section">
+        <form id="helpForm">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Describe your issue..." required></textarea>
+
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            <option value="lost-item">Lost Item</option>
+            <option value="safety-concern">Safety Concern</option>
+            <option value="neighborhood-support">Neighborhood Support</option>
+            <option value="advice">Advice</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label for="photo">Attach Photo (optional)</label>
+          <input type="file" id="photo" name="photo" accept="image/*">
+
+          <label for="location">Attach Location (optional)</label>
+          <input type="text" id="location" name="location" placeholder="E.g., Zone 2, Cebu">
+
+          <button type="submit">Submit Request</button>
+        </form>
+      </section>
+
+      <!-- Community Feed -->
+      <section class="community-feed">
+        <h2>Community Feed</h2>
+        <div id="feed"></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const helpForm = document.getElementById('helpForm');
+const feed = document.getElementById('feed');
+
+helpForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const description = document.getElementById('description').value;
+  const category = document.getElementById('category').value;
+  const location = document.getElementById('location').value;
+  const photoInput = document.getElementById('photo');
+  let photoURL = '';
+
+  if (photoInput.files && photoInput.files[0]) {
+    photoURL = URL.createObjectURL(photoInput.files[0]);
+  }
+
+  // Create feed item
+  const feedItem = document.createElement('div');
+  feedItem.classList.add('feed-item');
+  
+  feedItem.innerHTML = `
+    <p><strong>Category:</strong> ${category}</p>
+    <p>${description}</p>
+    ${photoURL ? `<img src="${photoURL}" alt="Attached Photo" class="feed-photo">` : ''}
+    ${location ? `<p class="feed-location">Location: ${location}</p>` : ''}
+    <p class="feed-meta">Posted just now</p>
+  `;
+
+  feed.prepend(feedItem);
+
+  helpForm.reset();
+});
+  </script>
+</body>
+</html>
