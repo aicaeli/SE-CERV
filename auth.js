@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'changeme_secret_for_dev_only';
+const bcrypt = require('bcrypt');
 const { getDbConnection, getAsync } = require('./db');
+
+const SECRET = process.env.JWT_SECRET || 'changeme_secret_for_dev_only';
 
 function signToken(payload) {
   // expires in 7 days
@@ -24,9 +26,17 @@ function authMiddleware(req, res, next) {
 
 async function getUserById(id) {
   const db = getDbConnection();
-  const row = await getAsync(db, 'SELECT id, name, email, phone, role, avatar_url, notifications_enabled, created_at, updated_at FROM users WHERE id = ?', [id]);
+  const row = await getAsync(db, 'SELECT id, fullname, email, mobile, dob, gender, barangay, city, province, user_role, profile_picture_path, emergency_contact_name, emergency_contact_number, notifications_enabled, created_at, updated_at FROM users WHERE id = ?', [id]);
   db.close();
   return row;
 }
 
-module.exports = { signToken, authMiddleware, getUserById };
+async function hashPassword(password) {
+  return await bcrypt.hash(password, 10);
+}
+
+async function comparePassword(password, hash) {
+  return await bcrypt.compare(password, hash);
+}
+
+module.exports = { signToken, authMiddleware, getUserById, hashPassword, comparePassword };
