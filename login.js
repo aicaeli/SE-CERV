@@ -1,4 +1,4 @@
-// ✅ PASSWORD VISIBILITY TOGGLE
+// PASSWORD VISIBILITY TOGGLE
 const togglePassword = document.getElementById('togglePassword');
 const passwordInput = document.getElementById('password');
 
@@ -8,8 +8,8 @@ togglePassword.addEventListener('click', () => {
   togglePassword.textContent = type === 'password' ? 'visibility_off' : 'visibility';
 });
 
-// ✅ LOGIN FORM SUBMIT SIMULATION
-document.getElementById('loginForm').addEventListener('submit', (e) => {
+// LOGIN FORM SUBMIT - NOW CONNECTS TO BACKEND
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const email = document.getElementById('email').value.trim();
@@ -20,11 +20,30 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
     return;
   }
 
-  // (Simulated authentication)
-  if (email === "user@cerv.com" && password === "1234") {
+  try {
+    const response = await fetch('http://localhost:4000/api/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Login failed");
+      return;
+    }
+
+    // Store token and user info
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
     alert("Login successful!");
-    window.location.href = "dashboard.html"; // Redirect to dashboard
-  } else {
-    alert("Invalid email or password.");
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Connection error. Make sure the backend is running on http://localhost:4000");
   }
 });
