@@ -164,16 +164,61 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cb) cb.addEventListener('change', updateSubmitEnabled);
   });
 
-  // Form submission (simulation)
+  // Form submission - CONNECTS TO BACKEND
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!validateStep(3)) {
         alert('Please complete all required fields.');
         return;
       }
-      alert('Account created successfully!');
-      window.location.href = 'dashboard.html';
+
+      try {
+        // Collect all form data
+        const formData = {
+          fullname: document.getElementById('fullname').value,
+          email: document.getElementById('email').value,
+          mobile: document.getElementById('mobile').value,
+          dob: document.getElementById('dob').value,
+          gender: document.querySelector('input[name="gender"]:checked')?.value || 'Prefer not to say',
+          houseStreet: document.getElementById('houseStreet').value,
+          barangay: document.getElementById('barangay').value,
+          city: document.getElementById('city').value,
+          province: document.getElementById('province').value,
+          idType: document.getElementById('idType').value,
+          idNumber: document.getElementById('idNumber').value,
+          userRole: document.getElementById('userRole').value,
+          emergencyContactName: document.getElementById('emergencyContactName').value,
+          emergencyContactNumber: document.getElementById('emergencyContactNumber').value,
+          preferredComm: document.getElementById('preferredComm').value,
+          password: document.getElementById('password').value
+        };
+
+        const response = await fetch('http://localhost:4000/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.message || "Registration failed");
+          return;
+        }
+
+        // Store token and user info
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        alert('Account created successfully!');
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        console.error("Registration error:", error);
+        alert("Connection error. Make sure the backend is running on http://localhost:4000");
+      }
     });
   }
 });
