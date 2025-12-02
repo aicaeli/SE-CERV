@@ -1,43 +1,42 @@
-// routes/users.js
-const express = require("express");
-const router = express.Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { getDbConnection, getAsync } = require('./db');
 
-let users = []; // Temporary storage (you can replace with database later)
+const SECRET = process.env.JWT_SECRET || 'changeme_secret_for_dev_only';
 
-// 🧾 Register a new user
-router.post("/register", (req, res) => {
-  const { username, email, password } = req.body;
+function signToken(payload) {
+  // expires in 7 days
+  return jwt.sign(payload, SECRET, { expiresIn: '7d' });
+}
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
+function authMiddleware(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Authorization token required' });
   }
-
-  // Check if email already exists
-  const existingUser = users.find((u) => u.email === email);
-  if (existingUser) {
-    return res.status(400).json({ message: "Email already registered" });
+  const token = auth.slice(7);
+  try {
+    const data = jwt.verify(token, SECRET);
+    req.user = data; // { id, email, role, iat, exp }
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired token' });
   }
+}
 
-  const newUser = { id: users.length + 1, username, email, password };
-  users.push(newUser);
-  res.status(201).json({ message: "User registered successfully", user: newUser });
-});
+async function getUserById(id) {
+  const db = getDbConnection();
+  const row = await getAsync(db, 'SELECT id, fullname, email, mobile, dob, gender, barangay, city, province, user_role, profile_picture_path, emergency_contact_name, emergency_contact_number, notifications_enabled, created_at, updated_at FROM users WHERE id = ?', [id]);
+  db.close();
+  return row;
+}
 
-// 🔐 Login
-router.post("/login", (req, res) => {
-  const { email, password } = req.body;
-  const user = users.find((u) => u.email === email && u.password === password);
+async function hashPassword(password) {
+  return await bcrypt.hash(password, 10);
+}
 
-  if (!user) {
-    return res.status(401).json({ message: "Invalid email or password" });
-  }
+async function comparePassword(password, hash) {
+  return await bcrypt.compare(password, hash);
+}
 
-  res.json({ message: "Login successful", user });
-});
-
-// 👤 Get all users (for testing only)
-router.get("/", (req, res) => {
-  res.json(users);
-});
-
-module.exports = router;
+module.exports = { signToken, authMiddleware, getUserById, hashPassword, comparePassword };
